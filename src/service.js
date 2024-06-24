@@ -1,44 +1,47 @@
 import { makeObservable, observable, action, runInAction } from 'mobx';
 
-const apiUrl = 'https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io';
-// const apiUrl = process.env.REACT_APP_API;
+const apiUrl = 'https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io'; // החלף בכתובת ה-API האמיתית שלך
 
 class Service {
-    todos = [];
+  todos = [];
 
-    constructor() {
-        makeObservable(this, {
-            todos: observable,
-            setTodos: action,
-            addTodo: action,
-            initTodos: action
+  constructor() {
+    makeObservable(this, {
+      todos: observable,
+      setTodos: action,
+      addTodo: action,
+      initTodos: action,
+    });
+    this.initTodos();
+  }
+
+  async initTodos() {
+    console.log('Fetching todos...');
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          // הוסף פרמטר cache-busting (לדוגמה, חותמת זמן) אם אתה חושש מבעיות מטמון
+          'Cache-Control': 'no-cache', // או 'no-store' למניעת מטמון קפדנית יותר
+        },
+      });
+
+      if (response.ok) {
+        console.log(response);
+        const data = await response.json();
+        runInAction(() => {
+          this.setTodos(data);
         });
-        this.initTodos();
+      } else {
+        console.error('Failed to fetch todos');
+      }
+    } catch (error) {
+      console.error('Error fetching todos:', error);
     }
-
-    async initTodos() {
-        console.log('Fetching todos...');
-        try {
-            const response = await fetch(`https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io/items`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            });
-            if (response.ok) {
-                console.log(response);
-                const data = await response.json();
-                runInAction(() => {
-                    this.setTodos(data);
-                });
-            } else {
-                console.error('Failed to fetch todos');
-            }
-        } catch (error) {
-            console.error('Error fetching todos:', error);
-        }
-    }
+  }
 
     setTodos(data) {
         this.todos = data;

@@ -1,7 +1,7 @@
 import { makeObservable, observable, action, runInAction } from 'mobx';
 
-// const apiUrl = 'https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io';
-const apiUrl = process.env.REACT_APP_API;
+const apiUrl = 'https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io';
+// const apiUrl = process.env.REACT_APP_API;
 
 class Service {
     todos = [];
@@ -19,7 +19,7 @@ class Service {
     async initTodos() {
         console.log('Fetching todos...');
         try {
-            const response = await fetch(`${apiUrl}/items`, {
+            const response = await fetch(`https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io/items`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -27,6 +27,7 @@ class Service {
                 }
             });
             if (response.ok) {
+                console.log(response);
                 const data = await response.json();
                 runInAction(() => {
                     this.setTodos(data);

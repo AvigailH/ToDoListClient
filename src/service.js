@@ -18,7 +18,7 @@ class Service {
     async initTodos() {
         console.log('Fetching todos...');
         try {
-            const response = await fetch(`${apiUrl}/items`, {
+            const response = await fetch(`https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io/items`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

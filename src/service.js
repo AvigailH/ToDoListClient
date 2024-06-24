@@ -1,4 +1,3 @@
-
 import { makeObservable, observable, action, runInAction } from 'mobx';
 
 const apiUrl = 'https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io';
@@ -19,7 +18,7 @@ class Service {
     async initTodos() {
         console.log('Fetching todos...');
         try {
-            const response = await fetch(https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io/items, {
+            const response = await fetch(`${apiUrl}/items`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,7 +45,7 @@ class Service {
     async addTodo(name) {
         console.log('Creating new todo:', name);
         try {
-            const response = await fetch(https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io/{apiUrl}, {
+            const response = await fetch(`${apiUrl}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,9 +67,9 @@ class Service {
     }
 
     async updateCompleted(id, isComplete) {
-        console.log(Updating todo ${id} to ${isComplete ? 'complete' : 'incomplete'});
+        console.log(`Updating todo ${id} to ${isComplete ? 'complete' : 'incomplete'}`);
         try {
-            const response = await fetch(${apiUrl}/${id}, {
+            const response = await fetch(`${apiUrl}/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -95,9 +94,9 @@ class Service {
     }
 
     async deleteTodo(id) {
-        console.log(Deleting todo ${id});
+        console.log(`Deleting todo ${id}`);
         try {
-            const response = await fetch(${apiUrl}/${id}, {
+            const response = await fetch(`${apiUrl}/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

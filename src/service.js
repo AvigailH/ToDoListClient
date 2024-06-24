@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+// הגדרת כתובת ה-URL הבסיסית של ה-API
 const apiUrl = `https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io`;
 
+// יצירת instance של axios עם כתובת הבסיס ועם כותרות נכונות
 const defaultAxios = axios.create({
     baseURL: apiUrl,
     headers: {
@@ -10,6 +12,7 @@ const defaultAxios = axios.create({
     }
 });
 
+// הוספת interceptors ל-axios ללכידת תגובות ושגיאות
 defaultAxios.interceptors.response.use(
     response => response,
     error => {
@@ -18,12 +21,14 @@ defaultAxios.interceptors.response.use(
     }
 );
 
+// פונקציה להדפסת בקשות ב-console לצורכי בדיקה
 const logRequest = (method, url, data) => {
     console.log(`Request Method: ${method}`);
     console.log(`Request URL: ${defaultAxios.defaults.baseURL}${url}`);
     if (data) console.log(`Request Data: ${JSON.stringify(data)}`);
 };
 
+// פונקציות שירות המבצעות את הבקשות לשרת
 export default {
     getTasks: async () => {
         logRequest('GET', '/items');

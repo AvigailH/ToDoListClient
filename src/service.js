@@ -1,6 +1,7 @@
 import { makeObservable, observable, action, runInAction } from 'mobx';
 
-const apiUrl = 'https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io';
+// const apiUrl = 'https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io';
+const apiUrl = process.env.REACT_APP_API;
 
 class Service {
     todos = [];

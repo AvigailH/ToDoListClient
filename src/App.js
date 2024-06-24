@@ -7,28 +7,44 @@ function App() {
 
     async function getTodos() {
         console.log('Fetching todos...');
-        const todos = await service.getTasks();
-        setTodos(todos);
+        try {
+            const todos = await service.getTasks();
+            setTodos(todos);
+        } catch (error) {
+            console.error('Error fetching todos:', error);
+        }
     }
 
     async function createTodo(e) {
         e.preventDefault();
         console.log('Creating new todo:', newTodo);
-        await service.addTask(newTodo);
-        setNewTodo("");//clear input
-        await getTodos();//refresh tasks list (in order to see the new one)
+        try {
+            await service.addTask(newTodo);
+            setNewTodo("");
+            await getTodos();
+        } catch (error) {
+            console.error('Error creating todo:', error);
+        }
     }
 
     async function updateCompleted(todo, isComplete) {
         console.log(`Updating todo ${todo.id} to ${isComplete ? 'complete' : 'incomplete'}`);
-        await service.setCompleted(todo.id, isComplete);
-        await getTodos();//refresh tasks list (in order to see the updated one)
+        try {
+            await service.setCompleted(todo.id, isComplete);
+            await getTodos();
+        } catch (error) {
+            console.error('Error updating todo:', error);
+        }
     }
 
     async function deleteTodo(id) {
         console.log(`Deleting todo ${id}`);
-        await service.deleteTask(id);
-        await getTodos();//refresh tasks list
+        try {
+            await service.deleteTask(id);
+            await getTodos();
+        } catch (error) {
+            console.error('Error deleting todo:', error);
+        }
     }
 
     useEffect(() => {

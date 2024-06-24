@@ -1,43 +1,48 @@
 import axios from 'axios';
 
 const apiUrl = `https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io`;
+
 const defaultAxios = axios.create({
     baseURL: apiUrl,
     headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Access-Control-Allow-Origin': '*', // This header to refer to CORS
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE', // and this header with the allowed operations
-        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept', // and this header for certain headers
-    },
+        'Accept': 'application/json'
+    }
 });
 
 defaultAxios.interceptors.response.use(
-    (response) => response,
-    (error) => {
+    response => response,
+    error => {
         console.error('API Error:', error.response?.data?.message || error.message);
         return Promise.reject(error);
     }
 );
 
+const logRequest = (method, url, data) => {
+    console.log(`Request Method: ${method}`);
+    console.log(`Request URL: ${defaultAxios.defaults.baseURL}${url}`);
+    if (data) console.log(`Request Data: ${JSON.stringify(data)}`);
+};
+
 export default {
     getTasks: async () => {
-        const result = await defaultAxios.get('/items');  
+        logRequest('GET', '/items');
+        const result = await defaultAxios.get('/items');
         return result.data;
     },
-
     addTask: async (name) => {
-        const result = await defaultAxios.post('/', { name });  
+        logRequest('POST', '/', { name });
+        const result = await defaultAxios.post('/', { name });
         return result.data;
     },
-
     setCompleted: async (id, isComplete) => {
-        const result = await defaultAxios.put(`/${id}`, { isComplete });  
+        logRequest('PUT', `/${id}`, { isComplete });
+        const result = await defaultAxios.put(`/${id}`, { isComplete });
         return result.data;
     },
-
     deleteTask: async (id) => {
-        await defaultAxios.delete(`/${id}`);  
+        logRequest('DELETE', `/${id}`);
+        await defaultAxios.delete(`/${id}`);
         return { success: true };
-    },
+    }
 };

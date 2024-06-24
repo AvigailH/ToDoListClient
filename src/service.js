@@ -18,25 +18,26 @@ class Service {
     async initTodos() {
         console.log('Fetching todos...');
         try {
-            const response = await fetch(`https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io/items`, {
+            const response = await fetch(`${apiUrl}/items`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 }
             });
-         if (response.ok) {
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
-                const data = await response.json();
-                runInAction(() => {
-                    this.setTodos(data);
-                });
+            if (response.ok) {
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const data = await response.json();
+                    runInAction(() => {
+                        this.setTodos(data);
+                    });
+                } else {
+                    console.error('Response is not in JSON format');
+                }
             } else {
-                console.error('Response is not in JSON format');
+                console.error('Failed to fetch todos');
             }
-        } else {
-            console.error('Failed to fetch todos');
         } catch (error) {
             console.error('Error fetching todos:', error);
         }

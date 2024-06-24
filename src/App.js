@@ -1,55 +1,27 @@
 import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import service from './service.js';
 
-function App() {
+const App = observer(() => {
     const [newTodo, setNewTodo] = useState("");
-    const [todos, setTodos] = useState([]);
 
-    async function getTodos() {
-        console.log('Fetching todos...');
-        try {
-            const todos = await service.getTasks();
-            setTodos(todos);
-        } catch (error) {
-            console.error('Error fetching todos:', error);
-        }
-    }
+    useEffect(() => {
+        service.initTodos();
+    }, []);
 
     async function createTodo(e) {
         e.preventDefault();
-        console.log('Creating new todo:', newTodo);
-        try {
-            await service.addTask(newTodo);
-            setNewTodo("");
-            await getTodos();
-        } catch (error) {
-            console.error('Error creating todo:', error);
-        }
+        await service.addTodo(newTodo);
+        setNewTodo("");
     }
 
     async function updateCompleted(todo, isComplete) {
-        console.log(`Updating todo ${todo.id} to ${isComplete ? 'complete' : 'incomplete'}`);
-        try {
-            await service.setCompleted(todo.id, isComplete);
-            await getTodos();
-        } catch (error) {
-            console.error('Error updating todo:', error);
-        }
+        await service.updateCompleted(todo.id, isComplete);
     }
 
     async function deleteTodo(id) {
-        console.log(`Deleting todo ${id}`);
-        try {
-            await service.deleteTask(id);
-            await getTodos();
-        } catch (error) {
-            console.error('Error deleting todo:', error);
-        }
+        await service.deleteTodo(id);
     }
-
-    useEffect(() => {
-        getTodos();
-    }, []);
 
     return (
         <section className="todoapp">
@@ -61,11 +33,11 @@ function App() {
             </header>
             <section className="main" style={{ display: "block" }}>
                 <ul className="todo-list">
-                    {todos.map(todo => {
+                    {service.getTodos.map(todo => {
                         return (
                             <li className={todo.isComplete ? "completed" : ""} key={todo.id}>
                                 <div className="view">
-                                    <input className="toggle" type="checkbox" defaultChecked={todo.isComplete} onChange={(e) => updateCompleted(todo, e.target.checked)} />
+                                    <input className="toggle" type="checkbox" checked={todo.isComplete} onChange={(e) => updateCompleted(todo, e.target.checked)} />
                                     <label>{todo.name}</label>
                                     <button className="destroy" onClick={() => deleteTodo(todo.id)}></button>
                                 </div>
@@ -76,6 +48,6 @@ function App() {
             </section>
         </section>
     );
-}
+});
 
 export default App;

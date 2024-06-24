@@ -19,7 +19,7 @@ class Service {
     async initTodos() {
         console.log('Fetching todos...');
         try {
-            const response = await fetch(${apiUrl}/items, {
+            const response = await fetch(https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io/items, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ class Service {
     async addTodo(name) {
         console.log('Creating new todo:', name);
         try {
-            const response = await fetch(${apiUrl}/, {
+            const response = await fetch(https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io/{apiUrl}, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -4,6 +4,13 @@ const apiUrl = process.env.REACT_APP_API;
 
 const defaultAxios = axios.create({
     baseURL: apiUrl,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*', // כותרת זו כדי להתייחס ל-CORS
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE', // וכותרת זו עם הפעולות המותרות
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept', // וכותרת זו לכותרות מסוימות
+    },
 });
 
 defaultAxios.interceptors.response.use(

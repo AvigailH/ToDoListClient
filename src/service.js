@@ -1,49 +1,58 @@
-import axios from 'axios';
-
-// הגדרת כתובת ה-URL הבסיסית של ה-API
 const apiUrl = 'https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io';
-
-const defaultAxios = axios.create({
-    baseURL: apiUrl,
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
-});
-
-defaultAxios.interceptors.response.use(
-    response => response,
-    error => {
-        console.error('API Error:', error.response?.data?.message || error.message);
-        return Promise.reject(error);
-    }
-);
 
 const logRequest = (method, url, data) => {
     console.log(`Request Method: ${method}`);
-    console.log(`Request URL: ${defaultAxios.defaults.baseURL}${url}`);
+    console.log(`Request URL: ${apiUrl}${url}`);
     if (data) console.log(`Request Data: ${JSON.stringify(data)}`);
+};
+
+const handleResponse = async (response) => {
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Error occurred');
+    }
+    return response.json();
 };
 
 export default {
     getTasks: async () => {
         logRequest('GET', '/items');
-        const result = await defaultAxios.get(`${apiUrl}/items`);
-        return result.data;
+        const response = await fetch(`${apiUrl}/items`);
+        return handleResponse(response);
     },
     addTask: async (name) => {
         logRequest('POST', '/', { name });
-        const result = await defaultAxios.post(`${apiUrl}/`, { name });
-        return result.data;
+        const response = await fetch(`${apiUrl}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ name })
+        });
+        return handleResponse(response);
     },
     setCompleted: async (id, isComplete) => {
         logRequest('PUT', `/${id}`, { isComplete });
-        const result = await defaultAxios.put(`${apiUrl}/${id}`, { isComplete });
-        return result.data;
+        const response = await fetch(`${apiUrl}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ isComplete })
+        });
+        return handleResponse(response);
     },
     deleteTask: async (id) => {
         logRequest('DELETE', `/${id}`);
-        await defaultAxios.delete(`${apiUrl}/${id}`);
-        return { success: true };
+        const response = await fetch(`${apiUrl}/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+        return handleResponse(response);
     }
 };

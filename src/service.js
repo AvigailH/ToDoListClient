@@ -25,14 +25,18 @@ class Service {
                     'Accept': 'application/json'
                 }
             });
-            if (response.ok) {
+         if (response.ok) {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
                 const data = await response.json();
                 runInAction(() => {
                     this.setTodos(data);
                 });
             } else {
-                console.error('Failed to fetch todos');
+                console.error('Response is not in JSON format');
             }
+        } else {
+            console.error('Failed to fetch todos');
         } catch (error) {
             console.error('Error fetching todos:', error);
         }

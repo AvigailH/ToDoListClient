@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiUrl = process.env.REACT_APP_API;
-console.log(apiUrl);
+console.log("שלום");
 const defaultAxios = axios.create({
     baseURL: apiUrl,
     headers: {

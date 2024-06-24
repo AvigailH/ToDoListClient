@@ -1,4 +1,4 @@
-const apiUrl = 'https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io';
+const apiUrl = https://app-5cedf3e4-31df-4667-8c0a-403aa64092f3.cleverapps.io;
 
 const logRequest = (method, url, data) => {
     console.log(`Request Method: ${method}`);

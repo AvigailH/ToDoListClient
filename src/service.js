@@ -23,6 +23,7 @@ export default {
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_API,
   });
+  console.log(apiUrl);
   const result = await axiosInstance.get('/items');
   return result.data;
 },

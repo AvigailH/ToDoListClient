@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const apiKey = 'rnd_L84GwTcAUXEGwm5Hbj0kOvckDojr';  
+const apiKey = 'rnd_L84GwTcAUXEGwm5Hbj0kOvckDojr'; // Your API key
 
 const axiosInstance = axios.create({
   baseURL: 'https://todoserver121.onrender.com',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
     'Content-Type': 'application/json',
-  }
+  },
 });
 
 const handleRequestError = (error) => {
@@ -15,12 +15,18 @@ const handleRequestError = (error) => {
   return Promise.reject(error);
 };
 
+let isTodosLoading = false; // Flag to indicate loading state
+
 export default {
   getTasks: async () => {
+    isTodosLoading = true; // Set loading flag to true
+
     try {
       const result = await axiosInstance.get('/items');
+      isTodosLoading = false; // Set loading flag to false on success
       return result.data;
     } catch (error) {
+      isTodosLoading = false; // Set loading flag to false on error
       return handleRequestError(error);
     }
   },
@@ -50,5 +56,9 @@ export default {
     } catch (error) {
       return handleRequestError(error);
     }
+  },
+
+  isLoadingTodos: () => {
+    return isTodosLoading; // Function to check loading state
   },
 };

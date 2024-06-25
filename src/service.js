@@ -3,7 +3,7 @@
 const apiUrl = 'https://todoserver121.onrender.com';
 
 const defaultAxios = axios.create({
-baseURL: https://todoserver121.onrender.com,
+  baseURL: 'https://todoserver121.onrender.com',
 });
 
 defaultAxios.interceptors.response.use(

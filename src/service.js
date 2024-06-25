@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const apiKey = 'rnd_L84GwTcAUXEGwm5Hbj0kOvckDojr'; // Your API key
+const apiKey = process.env.APIKEY; // Your API key
 
 const axiosInstance = axios.create({
-  baseURL: 'https://todoserver121.onrender.com',
+  baseURL: process.env.REACT_APP_API,
   headers: {
     'Authorization': 'Bearer ' + apiKey,
     'Content-Type': 'application/json',

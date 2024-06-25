@@ -1,23 +1,30 @@
  import axios from 'axios';
 
-const apiUrl = 'https://todoserver121.onrender.com';
+const apiUrl = process.env.REACT_APP_API; // Use environment variable
 
 const defaultAxios = axios.create({
-  baseURL: 'https://todoserver121.onrender.com',
+  // baseURL is removed
 });
 
 defaultAxios.interceptors.response.use(
-(response) => response,
-(error) => {
-console.error('API Error:', error.response?.data?.message || error.message);
-return Promise.reject(error);
-}
+  (response) => response,
+  (error) => {
+    console.error('API Error:', error.response?.data?.message || error.message);
+    return Promise.reject(error);
+  }
 );
 
 export default {
-getTasks: async () => {
-const result = await defaultAxios.get('/items');
-return result.data;
+// getTasks: async () => {
+// const result = await defaultAxios.get('/items');
+// return result.data;
+// },
+ getTasks: async () => {
+  const axiosInstance = axios.create({
+    baseURL: process.env.REACT_APP_API,
+  });
+  const result = await axiosInstance.get('/items');
+  return result.data;
 },
 
 addTask: async (name) => {

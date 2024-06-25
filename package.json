@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "mobx": "^6.12.4",
@@ -12,7 +13,7 @@
     "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start --host 0.0.0.0 --disableHostCheck true",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -32,5 +33,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://todoserver121.onrender.com"
+  "proxy": "http://localhost:5000/"
 }

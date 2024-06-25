@@ -23,6 +23,7 @@ export default {
 
     try {
       const result = await axiosInstance.get('/items');
+      console.log(result);
       isTodosLoading = false; // Set loading flag to false on success
       return result.data;
     } catch (error) {

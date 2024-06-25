@@ -1,6 +1,6 @@
  import axios from 'axios';
 
-const apiUrl = process.env.REACT_APP_API;
+const apiUrl = 'https://todoserver121.onrender.com';
 
 const defaultAxios = axios.create({
 baseURL: apiUrl,

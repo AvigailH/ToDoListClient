@@ -7,7 +7,6 @@ const [todos, setTodos] = useState([]);
 
 async function getTodos() {
 const todos = await service.getTasks();
-console.log(todos);
 setTodos(todos);
 }
 
@@ -36,7 +35,6 @@ return (
 <section className="todoapp">
 <header className="header">
 <h1>todos</h1>
-<h1>{todos}</h1>
 <form onSubmit={createTodo}>
 <input className="new-todo" placeholder="Well, let's take on the day" value={newTodo} onChange={(e) => setNewTodo(e.target.value)} />
 </form>

@@ -5,61 +5,67 @@ const apiKey = 'rnd_L84GwTcAUXEGwm5Hbj0kOvckDojr'; // Your API key
 const axiosInstance = axios.create({
   baseURL: 'https://todoserver121.onrender.com',
   headers: {
-    'Authorization': `Bearer ${apiKey}`,
+    'Authorization': 'Bearer ' + apiKey,
     'Content-Type': 'application/json',
   },
 });
 
-const handleRequestError = (error) => {
-  console.error('API Error:', error.response?.data?.message || error.message);
+function handleRequestError(error) {
+  console.error('API Error:', error.response ? error.response.data.message : error.message);
   return Promise.reject(error);
-};
+}
 
 let isTodosLoading = false; // Flag to indicate loading state
 
-export default {
-  getTasks: async () => {
+const api = {
+  getTasks: function() {
     isTodosLoading = true; // Set loading flag to true
 
-    try {
-      const result = await axiosInstance.get('/items');
-      console.log(result);
-      isTodosLoading = false; // Set loading flag to false on success
-      return result.data;
-    } catch (error) {
-      isTodosLoading = false; // Set loading flag to false on error
-      return handleRequestError(error);
-    }
+    return axiosInstance.get('/items')
+      .then(function(result) {
+        console.log(result);
+        isTodosLoading = false; // Set loading flag to false on success
+        return result.data;
+      })
+      .catch(function(error) {
+        isTodosLoading = false; // Set loading flag to false on error
+        return handleRequestError(error);
+      });
   },
 
-  addTask: async (name) => {
-    try {
-      const result = await axiosInstance.post('/', { name });
-      return result.data;
-    } catch (error) {
-      return handleRequestError(error);
-    }
+  addTask: function(name) {
+    return axiosInstance.post('/', { name })
+      .then(function(result) {
+        return result.data;
+      })
+      .catch(function(error) {
+        return handleRequestError(error);
+      });
   },
 
-  setCompleted: async (id, isComplete) => {
-    try {
-      const result = await axiosInstance.put(`/${id}`, { isComplete });
-      return result.data;
-    } catch (error) {
-      return handleRequestError(error);
-    }
+  setCompleted: function(id, isComplete) {
+    return axiosInstance.put('/' + id, { isComplete })
+      .then(function(result) {
+        return result.data;
+      })
+      .catch(function(error) {
+        return handleRequestError(error);
+      });
   },
 
-  deleteTask: async (id) => {
-    try {
-      await axiosInstance.delete(`/${id}`);
-      return { success: true };
-    } catch (error) {
-      return handleRequestError(error);
-    }
+  deleteTask: function(id) {
+    return axiosInstance.delete('/' + id)
+      .then(function() {
+        return { success: true };
+      })
+      .catch(function(error) {
+        return handleRequestError(error);
+      });
   },
 
-  isLoadingTodos: () => {
+  isLoadingTodos: function() {
     return isTodosLoading; // Function to check loading state
   },
 };
+
+export default api;
